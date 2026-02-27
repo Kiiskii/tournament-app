@@ -35,3 +35,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# extra
+analysis-notes.md
+analysis-notes.txt
+backend-files.md
+backend-files.txt
+backend-files-summary.md
+backend-files-summary.txt
+prompts-log.txt
