@@ -102,5 +102,42 @@
   "Brackets": {
     "selectseed": "Valitse ottelujärjestys turnauksesta",
     "noRRtournamentsfound": "Ei vanhoja round robin turnauksia"
+  },
+  "Admin": {
+    "title": "Hallintapaneeli",
+    "players": "Pelaajat",
+    "users": "Käyttäjät",
+    "admin": "Hallinta",
+    "noPlayers": "Pelaajia ei löytynyt",
+    "noUsers": "Käyttäjiä ei löytynyt",
+    "deletePlayer": "Poista pelaaja",
+    "deletePlayerConfirm": "Haluatko varmasti poistaa pelaajan {name}? Tämä poistaa hänet myös kaikista turnauksista ja otteluista.",
+    "deleteUser": "Poista käyttäjä",
+    "deleteUserConfirm": "Haluatko varmasti poistaa käyttäjän {name}?",
+    "cannotDeleteSelf": "Et voi poistaa omaa tiliäsi",
+    "createUser": "Luo käyttäjä",
+    "username": "Käyttäjätunnus",
+    "password": "Salasana",
+    "role": "Rooli",
+    "actions": "Toiminnot",
+    "submit": "Tallenna",
+    "cancel": "Peruuta",
+    "resetPassword": "Vaihda salasana",
+    "newPassword": "Uusi salasana",
+    "changeRole": "Vaihda rooli",
+    "userCreated": "Käyttäjä luotu",
+    "userDeleted": "Käyttäjä poistettu",
+    "roleUpdated": "Rooli päivitetty",
+    "passwordReset": "Salasana vaihdettu",
+    "playerDeleted": "Pelaaja poistettu",
+    "error": "Virhe tapahtui",
+    "fieldsRequired": "Kaikki kentät ovat pakollisia",
+    "tournaments": "Turnaukset"
+  },
+  "Setup": {
+    "title": "Luo ylläpitäjätili",
+    "description": "Käyttäjiä ei löytynyt. Luo ensimmäinen ylläpitäjätili aloittaaksesi.",
+    "submit": "Luo tili",
+    "error": "Virhe tapahtui"
   }
 }

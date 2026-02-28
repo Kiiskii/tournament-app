@@ -8,10 +8,12 @@ type AddplayerProps = {
 
 const Addplayer = ({ closeModal }: AddplayerProps) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const t = useTranslations("AddPlayer");
   const context = useTournamentContext();
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    setError("");
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const newPlayer = formData.get("name")?.toString().trim();
@@ -23,14 +25,14 @@ const Addplayer = ({ closeModal }: AddplayerProps) => {
 
     // check if name is empty
     if (!newP.name) {
-      alert(t("emptyname"));
+      setError(t("emptyname"));
       setLoading(false);
       return;
     }
 
     // check name length
     if (newP.name.length > 16) {
-      alert(t("nametoolong"));
+      setError(t("nametoolong"));
       setLoading(false);
       return;
     }
@@ -42,7 +44,7 @@ const Addplayer = ({ closeModal }: AddplayerProps) => {
         player.player.player_name.toLowerCase() === newP.name?.toLowerCase(),
     );
     if (isAlreadyInTournament.length) {
-      alert(t("alreadyintournament"));
+      setError(t("alreadyintournament"));
       setLoading(false);
       return;
     }
@@ -57,16 +59,16 @@ const Addplayer = ({ closeModal }: AddplayerProps) => {
       switch (res.status) {
         case 400:
           if (errorMessage === "Error adding player to players table") {
-            alert(t("playerinplayerstable", { title: t("title") }));
+            setError(t("playerinplayerstable", { title: t("title") }));
             break;
           }
-          alert(t("erroraddingplayer"));
+          setError(t("erroraddingplayer"));
           break;
         case 401:
-          alert(t("unauth"));
+          setError(t("unauth"));
           break;
         default:
-          alert(t("erroraddingplayer"));
+          setError(t("erroraddingplayer"));
       }
       setLoading(false);
       return;
@@ -76,7 +78,6 @@ const Addplayer = ({ closeModal }: AddplayerProps) => {
     context.setPlayers((players) => [...players, player]);
 
     closeModal();
-    alert(`${newPlayer} ${t("playeradded")}`);
     setLoading(false);
   };
 
@@ -85,6 +86,9 @@ const Addplayer = ({ closeModal }: AddplayerProps) => {
       <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         {t("title2")}
       </h2>
+      {error && (
+        <p className="text-red-500 text-sm text-center">{error}</p>
+      )}
       <input
         id="name"
         name="name"
