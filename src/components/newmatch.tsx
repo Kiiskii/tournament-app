@@ -22,6 +22,7 @@ const AddMatch = ({
   opponent,
 }: AddmatchProps) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const t = useTranslations("NewMatch");
   const context = useTournamentContext();
 
@@ -56,11 +57,12 @@ const AddMatch = ({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    setError("");
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     if (!context.tournament) {
-      alert(t("notournamentfound"));
+      setError(t("notournamentfound"));
       setLoading(false);
       return;
     }
@@ -77,19 +79,19 @@ const AddMatch = ({
     };
 
     if (form.player1_hits === form.player2_hits) {
-      alert(t("nodraws"));
+      setError(t("nodraws"));
       setLoading(false);
       return;
     }
 
     if (!form.player1.trim() || !form.player2.trim()) {
-      alert(t("selectbothplayers"));
+      setError(t("selectbothplayers"));
       setLoading(false);
       return;
     }
 
     if (form.player1 === form.player2) {
-      alert(t("duplicateplayers"));
+      setError(t("duplicateplayers"));
       setLoading(false);
       return;
     }
@@ -115,7 +117,7 @@ const AddMatch = ({
       ) as NonNullable<Player>[];
 
       if (findPlayers.length !== 2) {
-        alert(t("selectbothplayers"));
+        setError(t("selectbothplayers"));
         setLoading(false);
         return;
       }
@@ -147,17 +149,20 @@ const AddMatch = ({
 
       switch (res.status) {
         case 400:
-          return alert(t("addmatchfailed"));
+          setError(t("addmatchfailed"));
+          return;
 
         case 409:
-          return alert(
+          setError(
             `${t("matchexists1")} (${form.player1} & ${form.player2}) ${t(
               "matchexists2",
             )} (${form.round})`,
           );
+          return;
 
         default:
-          return alert(t("unexpectederror"));
+          setError(t("unexpectederror"));
+          return;
       }
     }
 
@@ -210,6 +215,7 @@ const AddMatch = ({
         <h1 className="mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           {`${bracketMatch?.round}. ${t("title")}`}
         </h1>
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="flex *:grow gap-3">
             <div className="w-1/2 flex flex-col gap-3">
@@ -300,6 +306,7 @@ const AddMatch = ({
       <h1 className="mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         {`${context.activeRound}. ${t("title")}`}
       </h1>
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <div className="flex gap-6 *:grow">
           <div className="w-1/2">

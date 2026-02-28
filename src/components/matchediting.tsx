@@ -15,6 +15,7 @@ type EditmatchProps = {
 
 const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const t = useTranslations("NewMatch");
   const context = useTournamentContext();
   const [buttonClicked, setButtonClicked] = useState("");
@@ -24,11 +25,12 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    setError("");
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     if (!context.tournament) {
-      alert(t("notournamentfound"));
+      setError(t("notournamentfound"));
       setLoading(false);
       return;
     }
@@ -45,13 +47,13 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
     };
 
     if (!form.player1 || !form.player2) {
-      alert(t("selectbothplayers"));
+      setError(t("selectbothplayers"));
       setLoading(false);
       return;
     }
 
     if (form.player1 === form.player2) {
-      alert(t("duplicateplayers"));
+      setError(t("duplicateplayers"));
       setLoading(false);
       return;
     }
@@ -75,7 +77,7 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
 
   const updateHandler = async (form: Omit<Matches, "id">) => {
     if (form.player1_hits === form.player2_hits) {
-      alert(t("nodraws"));
+      setError(t("nodraws"));
       setLoading(false);
       return;
     }
@@ -88,17 +90,20 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
 
       switch (res.status) {
         case 400:
-          return alert(t("addmatchfailed"));
+          setError(t("addmatchfailed"));
+          return;
 
         case 409:
-          return alert(
+          setError(
             `${t("matchexists1")} (${form.player1} & ${form.player2}) ${t(
               "matchexists2",
             )} (${form.round})`,
           );
+          return;
 
         default:
-          return alert(t("unexpectederror"));
+          setError(t("unexpectederror"));
+          return;
       }
     }
 
@@ -143,7 +148,6 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
         };
       });
     });
-    alert(t("matchupdated"));
   };
 
   const deleteHandler = async (form: Omit<Matches, "id">) => {
@@ -156,17 +160,20 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
 
       switch (res.status) {
         case 400:
-          return alert(t("addmatchfailed"));
+          setError(t("addmatchfailed"));
+          return;
 
         case 409:
-          return alert(
+          setError(
             `${t("matchexists1")} (${form.player1} & ${form.player2}) ${t(
               "matchexists2",
             )} (${form.round})`,
           );
+          return;
 
         default:
-          return alert(t("unexpectederror"));
+          setError(t("unexpectederror"));
+          return;
       }
     }
 
@@ -201,7 +208,6 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
     };
     context.setPlayers(filter);
 
-    alert(t("matchdeleted"));
   };
 
   function findSharedMatch(player: Player, opponent: Player) {
@@ -233,6 +239,7 @@ const EditMatch = ({ closeModal, player, opponent }: EditmatchProps) => {
       <h1 className="mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
         {t("title2")}
       </h1>
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="flex *:grow gap-3">
           <div className="w-1/2 flex flex-col gap-3">
