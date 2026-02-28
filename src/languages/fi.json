@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Helsingin miekkailijat",
-    "description": "Helsingin miekkailjioiden tulostaulu aplikaatio"
+    "title": "Tournament Management",
+    "description": "Turnausten hallinta-applikaatio"
   },
   "Login": {
     "name": "Käyttäjätunnus",
