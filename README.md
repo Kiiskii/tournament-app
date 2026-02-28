@@ -1,4 +1,4 @@
-# Tournament App
+# Tournament Management App
 
 Next.js project that serves as an internal full-stack web application (CRUD). Managing events, tournaments and users.
 
@@ -42,19 +42,10 @@ To set up the project locally, follow these steps.
 git clone <repository-url>
 
 # Navigate to the project directory:
-cd helsingin-miekkailijat
+cd tournament-app
 
 # Install dependencies:
 npm install
-# or
-yarn
-# or
-pnpm install
-# or
-bun install
-
-# Define a network for Docker
-docker network create hm_network
 ```
 
 For local development you will want to create a file named `.env.development.local`.
@@ -65,17 +56,7 @@ POSTGRES_URL="postgres://postgres:postgres@localhost:5434/postgres"
 JWT_SECRET="secret"
 ```
 
-For running `npm run prod` you will have to use the production `POSTGRES_URL` and `JWT_SECRET` from Vercel and put them in a `.env.production.local` file.
-
-```env
-POSTGRES_URL="PRODUCTION_POSTGRES_URL_HERE"
-JWT_SECRET="PRODUCTION_JWT_SECRET_HERE"
-```
-
 ### Run the development server
-
-> [!IMPORTANT]
-> Do not forget creating the network on the setup step.
 
 ```bash
 docker compose up --build
@@ -83,41 +64,24 @@ docker compose up --build
 
 Open http://localhost:3000 with your browser to see the result.
 
-### Admin/Testing credentials
+### First time setup
 
-To add admin credentials in a debug environment you can use this SQL command to add an admin `admin`, `password` and a user account `user`, `password`.
-
-```sql
-INSERT INTO "users" ("username", "password", "role")
-VALUES
-    ('admin', '$2b$10$pYjCPeAy8xbSHrI6nevNgOaG1nLadHmlJeDtuHvbk/oWci9EQcqD.', 'admin'),
-    ('user', '$2b$10$pYjCPeAy8xbSHrI6nevNgOaG1nLadHmlJeDtuHvbk/oWci9EQcqD.', 'user')
-```
+When the database has no users, the login page will automatically show a setup form to create the first admin account.
 
 ## App Router
 
 > [!IMPORTANT]
 > [Read more about the Next.js App Router from here](https://nextjs.org/docs/app/building-your-application/routing#the-app-router). ([Frequently Asked Questions](https://nextjs.org/docs/app))
 
-Next.js uses a file-system-based router, where each .js or .tsx file in the pages directory automatically becomes a route. You can navigate the project using the app router.
-
-For example, the file pages/index.js corresponds to the home route (/). To create a new route, add a new file in the pages directory.
+Next.js uses a file-system-based router where each `page.tsx` file in the `app` directory automatically becomes a route. Locale-based routing is handled via the `[locale]` folder using `next-intl`.
 
 ## Internationalization (i18n) Translations
 
-The project supports internationalization for translations. Translation files are stored in the `languages` directory. You can add translations for different languages and use the next-i18next library to handle localization.
+The project supports internationalization for translations. Translation files are stored in the `languages` directory. You can add translations for different languages and use the next-intl library to handle localization.
 
 To switch languages, update the language in the URL (e.g., `/en` or `/fi`). To use this in conjunction with the App Router, we use the [locale] folder name. For detailed configuration and usage of i18n in Next.js, refer to the [Next.js Internationalization documentation](https://nextjs.org/docs/app/building-your-application/routing/internationalization) and [next-intl official documentation](https://next-intl-docs.vercel.app/docs/getting-started).
 
-## Deployment & CI/CD
-
-The project is currently set up for deployment on Vercel. Connect your Vercel account to the repository or a fork of it and configure the deployment settings.
-
 ## Troubleshooting
-
-### Error response from daemon: network local_network not found
-
-Running `docker network create hm_network` should fix the issue.
 
 ### sh: next: not found
 

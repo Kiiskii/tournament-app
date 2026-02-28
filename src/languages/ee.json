@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Helsinki Vehklejad",
-    "description": "Vehklemisturniiride haldamise aplikaat"
+    "title": "Tournament Management",
+    "description": "Turniiride haldamise rakendus"
   },
   "Login": {
     "name": "Kasutaja",
