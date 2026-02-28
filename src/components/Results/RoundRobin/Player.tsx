@@ -5,6 +5,7 @@ import { useTournamentContext } from "@/context/TournamentContext";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useUserContext } from "@/context/UserContext";
+import Modal from "@/components/modal";
 
 interface PlayerProps {
   player: Player;
@@ -32,47 +33,49 @@ export function Player({
   const account = useUserContext();
   const [hits, setHits] = useState<Hits>({ given: {}, taken: {} });
   const [matchesByOpponent, setOpponents] = useState<Opponents>({});
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const t = useTranslations("Leaderboard");
+  const tAdmin = useTranslations("Admin");
 
   async function removePlayer() {
-    if (window.confirm(`${t("remove")} ${player.player.player_name}?`)) {
-      const result = await removeTournamentPlayer(
-        player.player.tournament_id,
-        player.player.player_name,
+    setDeleteLoading(true);
+    const result = await removeTournamentPlayer(
+      player.player.tournament_id,
+      player.player.player_name,
+    );
+
+    if (!result.success) {
+      // Still remove from UI even if DB delete fails
+    }
+
+    context.setPlayers((prevPlayers) => {
+      // Exclude player to be removed from context
+      const players = prevPlayers.filter(
+        (state) =>
+          state && state.player.player_name !== player.player.player_name,
       );
 
-      if (!result.success) {
-        const userAgrees = window.confirm(
-          "Could not delete user from database, delete anyway?",
-        );
-        if (!userAgrees) return;
-      }
-
-      context.setPlayers((prevPlayers) => {
-        // Exclude player to be removed from context
-        const players = prevPlayers.filter(
-          (state) =>
-            state && state.player.player_name !== player.player.player_name,
+      // Loop remaining players
+      return players.map((p) => {
+        if (!p) return p;
+        // Exclude matches involving removed player
+        // keeping ones without the player
+        const matches = p.matches.filter(
+          (match) =>
+            match.player1 !== player.player.player_name &&
+            match.player2 !== player.player.player_name,
         );
 
-        // Loop remaining players
-        return players.map((p) => {
-          if (!p) return p;
-          // Exclude matches involving removed player
-          // keeping ones without the player
-          const matches = p.matches.filter(
-            (match) =>
-              match.player1 !== player.player.player_name &&
-              match.player2 !== player.player.player_name,
-          );
-
-          return {
-            player: p.player,
-            matches,
-          } as Player;
-        });
+        return {
+          player: p.player,
+          matches,
+        } as Player;
       });
-    }
+    });
+
+    setShowDeleteConfirm(false);
+    setDeleteLoading(false);
   }
 
   const getRemovePlayerButton = () => {
@@ -82,7 +85,7 @@ export function Player({
     return (
       <td>
         <button
-          onClick={() => removePlayer()}
+          onClick={() => setShowDeleteConfirm(true)}
           className="bg-red-400 p-1 rounded-full hover:bg-red-500"
         >
           <TrashIcon className="h-5 w-5 text-white" />
@@ -132,6 +135,7 @@ export function Player({
   }, [context.players, player.matches, player.player]);
 
   return (
+    <>
     <tr
       className={`${
         context.activeRound === 1
@@ -254,5 +258,31 @@ export function Player({
           (hits.taken[context.activeRound] ?? 0)}
       </td>
     </tr>
+    <Modal
+      isOpen={showDeleteConfirm}
+      closeModal={() => setShowDeleteConfirm(false)}
+    >
+      <div className="space-y-4">
+        <p className="text-lg font-semibold">{t("remove")} {player.player.player_name}?</p>
+        <div className="flex gap-3 justify-end">
+          <button
+            onClick={() => setShowDeleteConfirm(false)}
+            className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100"
+            type="button"
+          >
+            {tAdmin("cancel")}
+          </button>
+          <button
+            onClick={removePlayer}
+            disabled={deleteLoading}
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:opacity-50"
+            type="button"
+          >
+            {t("remove")}
+          </button>
+        </div>
+      </div>
+    </Modal>
+    </>
   );
 }

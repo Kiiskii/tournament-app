@@ -8,9 +8,11 @@ import { useEffect, useState } from "react";
 import { getRecentTournaments } from "@/database/getTournament";
 import { useUserContext } from "@/context/UserContext";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import Modal from "@/components/modal";
 
 export default function SelectTournament() {
   const t = useTranslations("Select");
+  const tAdmin = useTranslations("Admin");
   const account = useUserContext();
   const [previousTournaments, setPreviousTournaments] = useState<Tournament[]>(
     [],
@@ -18,6 +20,8 @@ export default function SelectTournament() {
   const [loading, setLoading] = useState(true);
   const [removeTournamentLoading, setRemoveTournamentLoading] = useState(false);
   const [tournamentsLength, setTournamentsLength] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState<Tournament | null>(null);
+  const [error, setError] = useState("");
 
   const getRemoveTournamentButton = (tour: Tournament) => {
     if (!account.user) return;
@@ -25,7 +29,7 @@ export default function SelectTournament() {
 
     return (
       <button
-        onClick={() => removeTournament(tour)}
+        onClick={() => setDeleteTarget(tour)}
         className="bg-red-400 p-1 rounded-full hover:bg-red-500"
         disabled={removeTournamentLoading}
       >
@@ -34,30 +38,32 @@ export default function SelectTournament() {
     );
   };
 
-  async function removeTournament(tour: Tournament) {
-    if (window.confirm(`${t("remove")} ${tour.name}?`)) {
-      setRemoveTournamentLoading(true);
-      const request = {
-        name: tour.name,
-        id: tour.id,
-      };
+  async function removeTournament() {
+    if (!deleteTarget) return;
+    setRemoveTournamentLoading(true);
+    setError("");
+    const request = {
+      name: deleteTarget.name,
+      id: deleteTarget.id,
+    };
 
-      const res = await fetch("/api/tournament/name", {
-        method: "DELETE",
-        body: JSON.stringify(request),
-      });
+    const res = await fetch("/api/tournament/name", {
+      method: "DELETE",
+      body: JSON.stringify(request),
+    });
 
-      if (res.ok) {
-        const updatedTournaments = previousTournaments.filter(
-          (tournament) => tournament.id !== tour.id,
-        );
-        setPreviousTournaments(updatedTournaments);
-        setRemoveTournamentLoading(false);
-        return;
-      }
-      alert(t("unexpectederror"));
+    if (res.ok) {
+      const updatedTournaments = previousTournaments.filter(
+        (tournament) => tournament.id !== deleteTarget.id,
+      );
+      setPreviousTournaments(updatedTournaments);
+      setDeleteTarget(null);
       setRemoveTournamentLoading(false);
+      return;
     }
+    setError(t("unexpectederror"));
+    setDeleteTarget(null);
+    setRemoveTournamentLoading(false);
   }
 
   useEffect(() => {
@@ -109,6 +115,11 @@ export default function SelectTournament() {
 
   return (
     <section className="container mx-auto mt-10 p-4 flex flex-col items-center gap-6">
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded max-w-md w-full">
+          {error}
+        </div>
+      )}
       {account.user?.role === "admin" ? (
         <div className="border border-gray-900 max-w-md p-6 rounded-md shadow-md w-full">
           <NewTournament />
@@ -137,6 +148,32 @@ export default function SelectTournament() {
         )}
         {loadMoreButton()}
       </div>
+
+      <Modal
+        isOpen={deleteTarget !== null}
+        closeModal={() => setDeleteTarget(null)}
+      >
+        <div className="space-y-4">
+          <p className="text-lg font-semibold">
+            {t("remove")} {deleteTarget?.name}?
+          </p>
+          <div className="flex gap-3 justify-end">
+            <button
+              onClick={() => setDeleteTarget(null)}
+              className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100"
+            >
+              {tAdmin("cancel")}
+            </button>
+            <button
+              onClick={removeTournament}
+              disabled={removeTournamentLoading}
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:opacity-50"
+            >
+              {t("remove")}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </section>
   );
 }

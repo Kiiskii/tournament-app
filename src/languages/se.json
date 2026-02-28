@@ -102,5 +102,42 @@
   "Brackets": {
     "selectseed": "Välj matchordning från turneringen",
     "noRRtournamentsfound": "Inga round robin-turneringar hittades"
+  },
+  "Admin": {
+    "title": "Adminpanel",
+    "players": "Spelare",
+    "users": "Användare",
+    "admin": "Admin",
+    "noPlayers": "Inga spelare hittades",
+    "noUsers": "Inga användare hittades",
+    "deletePlayer": "Ta bort spelare",
+    "deletePlayerConfirm": "Är du säker på att du vill ta bort spelaren {name}? Detta tar även bort dem från alla turneringar och matcher.",
+    "deleteUser": "Ta bort användare",
+    "deleteUserConfirm": "Är du säker på att du vill ta bort användaren {name}?",
+    "cannotDeleteSelf": "Kan inte ta bort ditt eget konto",
+    "createUser": "Skapa användare",
+    "username": "Användarnamn",
+    "password": "Lösenord",
+    "role": "Roll",
+    "actions": "Åtgärder",
+    "submit": "Skicka",
+    "cancel": "Avbryt",
+    "resetPassword": "Återställ lösenord",
+    "newPassword": "Nytt lösenord",
+    "changeRole": "Ändra roll",
+    "userCreated": "Användare skapad",
+    "userDeleted": "Användare borttagen",
+    "roleUpdated": "Roll uppdaterad",
+    "passwordReset": "Lösenord återställt",
+    "playerDeleted": "Spelare borttagen",
+    "error": "Ett fel uppstod",
+    "fieldsRequired": "Alla fält krävs",
+    "tournaments": "Turneringar"
+  },
+  "Setup": {
+    "title": "Skapa adminkonto",
+    "description": "Inga användare hittades. Skapa det första adminkontot för att komma igång.",
+    "submit": "Skapa konto",
+    "error": "Ett fel uppstod"
   }
 }

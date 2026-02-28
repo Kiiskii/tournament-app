@@ -102,5 +102,42 @@
   "Brackets": {
     "selectseed": "Valige turniirilt mängu järjekord",
     "noRRtournamentsfound": "Ringmänguturniire ei leitud"
+  },
+  "Admin": {
+    "title": "Halduspaneel",
+    "players": "Mängijad",
+    "users": "Kasutajad",
+    "admin": "Haldus",
+    "noPlayers": "Mängijaid ei leitud",
+    "noUsers": "Kasutajaid ei leitud",
+    "deletePlayer": "Kustuta mängija",
+    "deletePlayerConfirm": "Kas olete kindel, et soovite mängija {name} kustutada? See eemaldab ta ka kõigist turniiridest ja mängudest.",
+    "deleteUser": "Kustuta kasutaja",
+    "deleteUserConfirm": "Kas olete kindel, et soovite kasutaja {name} kustutada?",
+    "cannotDeleteSelf": "Ei saa kustutada enda kontot",
+    "createUser": "Loo kasutaja",
+    "username": "Kasutajanimi",
+    "password": "Parool",
+    "role": "Roll",
+    "actions": "Tegevused",
+    "submit": "Esita",
+    "cancel": "Tühista",
+    "resetPassword": "Lähtesta parool",
+    "newPassword": "Uus parool",
+    "changeRole": "Muuda rolli",
+    "userCreated": "Kasutaja loodud",
+    "userDeleted": "Kasutaja kustutatud",
+    "roleUpdated": "Roll uuendatud",
+    "passwordReset": "Parool lähtestatud",
+    "playerDeleted": "Mängija kustutatud",
+    "error": "Tekkis viga",
+    "fieldsRequired": "Kõik väljad on kohustuslikud",
+    "tournaments": "Turniirid"
+  },
+  "Setup": {
+    "title": "Loo administraatori konto",
+    "description": "Kasutajaid ei leitud. Loo esimene administraatori konto alustamiseks.",
+    "submit": "Loo konto",
+    "error": "Tekkis viga"
   }
 }

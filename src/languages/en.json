@@ -102,5 +102,42 @@
   "Brackets": {
     "selectseed": "Select match order from tournament",
     "noRRtournamentsfound": "No round robin tournaments found"
+  },
+  "Admin": {
+    "title": "Admin Panel",
+    "players": "Players",
+    "users": "Users",
+    "admin": "Admin",
+    "noPlayers": "No players found",
+    "noUsers": "No users found",
+    "deletePlayer": "Delete player",
+    "deletePlayerConfirm": "Are you sure you want to delete player {name}? This will also remove them from all tournaments and matches.",
+    "deleteUser": "Delete user",
+    "deleteUserConfirm": "Are you sure you want to delete user {name}?",
+    "cannotDeleteSelf": "Cannot delete your own account",
+    "createUser": "Create user",
+    "username": "Username",
+    "password": "Password",
+    "role": "Role",
+    "actions": "Actions",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "resetPassword": "Reset password",
+    "newPassword": "New password",
+    "changeRole": "Change role",
+    "userCreated": "User created",
+    "userDeleted": "User deleted",
+    "roleUpdated": "Role updated",
+    "passwordReset": "Password reset",
+    "playerDeleted": "Player deleted",
+    "error": "An error occurred",
+    "fieldsRequired": "All fields are required",
+    "tournaments": "Tournaments"
+  },
+  "Setup": {
+    "title": "Create Admin Account",
+    "description": "No users found. Create the first admin account to get started.",
+    "submit": "Create Account",
+    "error": "An error occurred"
   }
 }

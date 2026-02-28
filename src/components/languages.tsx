@@ -14,7 +14,7 @@ const Languages = () => {
   }
 
   return (
-    <div className="flex flex-row gap-5 absolute top-0 right-0 p-3 pr-4">
+    <div className="flex flex-row gap-5">
       <button onClick={() => changeLanguage("fi")}>
         <span className="fi fi-fi"></span>
       </button>

@@ -14,15 +14,9 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
-    openGraph: {
-      images: [
-        {
-          url: "/pictures/HFMlogoMetadata.png",
-        },
-      ],
-    },
+    openGraph: {},
     twitter: {
-      card: "summary_large_image",
+      card: "summary",
     },
   };
 }
